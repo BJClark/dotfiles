@@ -75,3 +75,6 @@ precmd() {
   title "zsh" "%m" "%55<...<%~"
   set_prompt
 }
+
+export TERM="xterm-256color"
+ZSH_THEME="spaceship/spaceship"
