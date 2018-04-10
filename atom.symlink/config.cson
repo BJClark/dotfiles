@@ -40,7 +40,7 @@
     telemetryConsent: "no"
   editor:
     fontFamily: "Menlo"
-    fontSize: 15
+    fontSize: 16
     invisibles: {}
     showIndentGuide: true
     softWrapAtPreferredLineLength: true
@@ -48,11 +48,18 @@
     panelDisplayMode: "closed"
   "linter-eslint":
     useGlobalEslint: true
+  "platformio-ide-terminal":
+    core:
+      shell: "/bin/zsh"
+    style:
+      theme: "solarized-dark"
   "prettier-atom":
     formatOnSaveOptions:
       enabled: true
   "release-notes":
     viewedVersion: "0.89.0"
+  "ruby-test":
+    specFramework: "rspec"
   "spell-check":
     grammars: [
       "text.plain"
@@ -62,6 +69,8 @@
     ]
   stylefmt:
     formatOnSave: true
+  "tree-view":
+    hideVcsIgnoredFiles: true
   welcome:
     showOnStartup: false
 ".js.jsx.react.source":
