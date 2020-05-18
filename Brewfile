@@ -1,0 +1,23 @@
+cask_args appdir: '/Applications'
+
+tap 'homebrew/bundle'
+tap 'puma/puma'
+
+brew 'ack'
+brew 'openssl'
+brew 'node'
+brew 'readline'
+brew 'ruby-install'
+brew 'chruby'
+brew 'unrar'
+brew 'wget'
+brew 'yarn'
+
+cask '1password'
+cask 'atom'
+cask 'google-chrome'
+cask 'slack'
+cask 'steam'
+cask 'transmission'
+cask 'tunnelbear'
+cask 'vlc'
