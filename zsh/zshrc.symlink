@@ -68,8 +68,12 @@ plugins=(
   chruby
   ruby
   docker-compose
+  docker
+  zsh_reload
+  rails
 )
 
+source $ZSH/oh-my-zsh.sh
 source /usr/local/opt/chruby/share/chruby/chruby.sh
 source /usr/local/opt/chruby/share/chruby/auto.sh
 
