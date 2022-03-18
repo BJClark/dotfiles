@@ -1,18 +1,14 @@
 # If you come from bash you might have to change your $PATH.
-# export PATH=$HOME/bin:/usr/local/bin:$PATH
+export PATH=$HOME/bin:/usr/local/bin:~/.dotfiles/bin:/usr/local/opt/make/libexec/gnubin:$PATH
 
 # shortcut to this dotfiles path is $DOTS
-export DOTS=$HOME/.dotfiles
+export DOTS=$HOME/Development/dotfiles
 
 # your project folder that we can `c [tab]` to
 export PROJECTS=~/Development
 
-# Stash your environment variables in ~/.localrc. This means they'll stay out
-# of your main dotfiles repository (which may be public, like this one), but
-# you'll have access to them in your scripts.
-if [[ -a ~/.localrc ]]
-then
-  source ~/.localrc
+if [ -f ~/.zshrc.local ]; then
+   source ~/.zshrc.local
 fi
 
 # all of our zsh files
@@ -73,7 +69,6 @@ plugins=(
   rails
 )
 
-source $ZSH/oh-my-zsh.sh
 source /usr/local/opt/chruby/share/chruby/chruby.sh
 source /usr/local/opt/chruby/share/chruby/auto.sh
 
@@ -81,5 +76,7 @@ source /usr/local/opt/chruby/share/chruby/auto.sh
 export NVM_DIR="$HOME/.nvm"
   [ -s "/usr/local/opt/nvm/nvm.sh" ] && . "/usr/local/opt/nvm/nvm.sh"  # This loads nvm
   [ -s "/usr/local/opt/nvm/etc/bash_completion.d/nvm" ] && . "/usr/local/opt/nvm/etc/bash_completion.d/nvm"  # This loads nvm bash_completion
-export PATH="/usr/local/opt/libxml2/bin:$PATH"
-export PATH="/usr/local/opt/libxml2/bin:$PATH"
+
+export VAULT_ADDR=https://vault.gse-eng.io
+export PATH="/usr/local/opt/avr-gcc@8/bin:$PATH"
+eval "$(rbenv init - zsh)"
