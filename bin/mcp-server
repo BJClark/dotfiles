@@ -1,0 +1,204 @@
+#!/usr/bin/env bash
+#
+# mcp-server - Command-line tool for managing MCP servers
+#
+# Usage: mcp-server [command] [args]
+#
+# Commands:
+#   start [model] [port]  - Start an MCP server with the specified model and port
+#   stop [pid]            - Stop the MCP server with the specified PID
+#   list                  - List all running MCP servers
+#   stop-all              - Stop all running MCP servers
+#   test [port]           - Test if the MCP server is running on the specified port
+#   logs                  - Show MCP server logs
+#   status                - Show status of running MCP servers
+
+set -e
+
+# Source MCP configuration
+if [ -f "$HOME/.dotfiles/mcp/config.zsh" ]; then
+  source "$HOME/.dotfiles/mcp/config.zsh"
+elif [ -f "$DOTS/mcp/config.zsh" ]; then
+  source "$DOTS/mcp/config.zsh"
+else
+  # Default values if config not found
+  MCP_MODELS_DIR="$HOME/.mcp/models"
+  MCP_CONFIG_DIR="$HOME/.mcp/configs"
+  MCP_CACHE_DIR="$HOME/.mcp/cache"
+  MCP_DEFAULT_LOCAL_MODEL="llama3"
+  MCP_PORT=8000
+  MCP_HOST="127.0.0.1"
+  MCP_LOG_LEVEL="info"
+  MCP_LOG_FILE="$HOME/.mcp/logs/mcp-server.log"
+  
+  # Create directories if they don't exist
+  mkdir -p "$MCP_MODELS_DIR" "$MCP_CONFIG_DIR" "$MCP_CACHE_DIR" "$(dirname "$MCP_LOG_FILE")"
+fi
+
+# Function to display help message
+function show_help() {
+  echo "Usage: mcp-server [command] [args]"
+  echo ""
+  echo "Commands:"
+  echo "  start [model] [port]  - Start an MCP server with the specified model and port"
+  echo "  stop [pid]            - Stop the MCP server with the specified PID"
+  echo "  list                  - List all running MCP servers"
+  echo "  stop-all              - Stop all running MCP servers"
+  echo "  test [port]           - Test if the MCP server is running on the specified port"
+  echo "  logs                  - Show MCP server logs"
+  echo "  status                - Show status of running MCP servers"
+  echo ""
+}
+
+# Start a local MCP server
+function start_server() {
+  local model_name=${1:-$MCP_DEFAULT_LOCAL_MODEL}
+  local port=${2:-$MCP_PORT}
+  
+  echo "Starting MCP server with model '$model_name' on port $port..."
+  
+  nohup python -m mcp.server \
+    --model $model_name \
+    --host $MCP_HOST \
+    --port $port \
+    --log-level $MCP_LOG_LEVEL \
+    --cache-dir $MCP_CACHE_DIR > "$MCP_LOG_FILE" 2>&1 &
+  
+  echo "MCP server started with PID $! (Log: $MCP_LOG_FILE)"
+  
+  # Add PID to running servers file
+  echo "$! $model_name $port" >> "$MCP_CONFIG_DIR/running_servers.txt"
+}
+
+# Stop a running MCP server
+function stop_server() {
+  local pid=$1
+  
+  if [[ -z "$pid" ]]; then
+    echo "Usage: mcp-server stop <pid>"
+    list_servers
+    return 1
+  fi
+  
+  if kill -0 $pid 2>/dev/null; then
+    echo "Stopping MCP server with PID $pid..."
+    kill $pid
+    sed -i'' -e "/^$pid /d" "$MCP_CONFIG_DIR/running_servers.txt"
+    echo "Server stopped."
+  else
+    echo "No running MCP server with PID $pid."
+    sed -i'' -e "/^$pid /d" "$MCP_CONFIG_DIR/running_servers.txt"
+  fi
+}
+
+# Stop all running MCP servers
+function stop_all_servers() {
+  if [[ -f "$MCP_CONFIG_DIR/running_servers.txt" ]]; then
+    while read -r pid model port; do
+      if kill -0 $pid 2>/dev/null; then
+        echo "Stopping MCP server ($model:$port) with PID $pid..."
+        kill $pid
+      fi
+    done < "$MCP_CONFIG_DIR/running_servers.txt"
+    rm "$MCP_CONFIG_DIR/running_servers.txt"
+    echo "All MCP servers stopped."
+  else
+    echo "No running MCP servers found."
+  fi
+}
+
+# List running MCP servers
+function list_servers() {
+  echo "Running MCP servers:"
+  if [[ -f "$MCP_CONFIG_DIR/running_servers.txt" ]]; then
+    echo "PID | Model | Port"
+    echo "----------------"
+    while read -r pid model port; do
+      if kill -0 $pid 2>/dev/null; then
+        echo "$pid | $model | $port"
+      else
+        sed -i'' -e "/^$pid /d" "$MCP_CONFIG_DIR/running_servers.txt"
+      fi
+    done < "$MCP_CONFIG_DIR/running_servers.txt"
+  else
+    echo "No running MCP servers found."
+  fi
+}
+
+# Test a running MCP server
+function test_server() {
+  local port=${1:-$MCP_PORT}
+  
+  echo "Testing MCP server at http://$MCP_HOST:$port..."
+  curl -s "http://$MCP_HOST:$port/v1/health" | jq . || echo "Server not responding"
+}
+
+# Show MCP server logs
+function show_logs() {
+  tail -f "$MCP_LOG_FILE"
+}
+
+# Show status of running MCP servers
+function show_status() {
+  if [[ -f "$MCP_CONFIG_DIR/running_servers.txt" ]]; then
+    local running=0
+    local total=0
+    
+    while read -r pid model port; do
+      ((total++))
+      if kill -0 $pid 2>/dev/null; then
+        ((running++))
+      else
+        sed -i'' -e "/^$pid /d" "$MCP_CONFIG_DIR/running_servers.txt"
+      fi
+    done < "$MCP_CONFIG_DIR/running_servers.txt"
+    
+    echo "MCP Server Status:"
+    echo "-----------------"
+    echo "Running servers: $running/$total"
+    echo "Config directory: $MCP_CONFIG_DIR"
+    echo "Models directory: $MCP_MODELS_DIR"
+    echo "Log file: $MCP_LOG_FILE"
+    echo ""
+    list_servers
+  else
+    echo "No MCP servers configured."
+  fi
+}
+
+# Main command dispatcher
+case "$1" in
+  start)
+    start_server "$2" "$3"
+    ;;
+  stop)
+    stop_server "$2"
+    ;;
+  list)
+    list_servers
+    ;;
+  stop-all)
+    stop_all_servers
+    ;;
+  test)
+    test_server "$2"
+    ;;
+  logs)
+    show_logs
+    ;;
+  status)
+    show_status
+    ;;
+  help|--help|-h)
+    show_help
+    ;;
+  *)
+    if [ -z "$1" ]; then
+      show_status
+    else
+      echo "Unknown command: $1"
+      show_help
+      exit 1
+    fi
+    ;;
+esac 

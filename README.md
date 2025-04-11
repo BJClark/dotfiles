@@ -1,87 +1,185 @@
-# holman does dotfiles
+# Modern Dotfiles
 
-Your dotfiles are how you personalize your system. These are mine.
+These dotfiles help you personalize your system with a modern development experience. Based on Holman's topic-centric organization, but updated with modern tools and workflows.
 
-I was a little tired of having long alias files and everything strewn about
-(which is extremely common on other dotfiles projects, too). That led to this
-project being much more topic-centric. I realized I could split a lot of things
-up into the main areas I used (Ruby, git, system libraries, and so on), so I
-structured the project accordingly.
+## Features
 
-If you're interested in the philosophy behind why projects like these are
-awesome, you might want to [read my post on the
-subject](http://zachholman.com/2010/08/dotfiles-are-meant-to-be-forked/).
+- **Shell**: Zsh with Oh-My-Zsh and Spaceship prompt
+- **Tool Management**: Mise for version management (Ruby, Node.js, Elixir, etc.)
+- **Terminal**: Ghostty configuration with modern theme
+- **Editor**: Cursor integration
+- **Languages**: 
+  - Ruby configuration
+  - Elixir/Phoenix/LiveBook setup
+  - Bun as primary JavaScript runtime
+- **DevOps**: 
+  - AWS CLI with profile management
+  - Docker integration
+- **Security**: 1Password CLI integration with SSH agent
+- **Utilities**: MCP server management for AI development
 
-## topical
+## Organization
 
-Everything's built around topic areas. If you're adding a new area to your
-forked dotfiles — say, "Java" — you can simply add a `java` directory and put
-files in there. Anything with an extension of `.zsh` will get automatically
-included into your shell. Anything with an extension of `.symlink` will get
-symlinked without extension into `$HOME` when you run `script/bootstrap`.
+Everything's built around topic areas. Each topic has its own directory containing related configuration files:
 
-## what's inside
+- **topic/\*.zsh**: Any files ending in `.zsh` get loaded into your shell environment
+- **topic/path.zsh**: Files named `path.zsh` are loaded first to set up `$PATH`
+- **topic/completion.zsh**: Files named `completion.zsh` are loaded last for completions
+- **topic/\*.symlink**: Files ending in `*.symlink` get symlinked into your home directory
+- **bin/**: Scripts added to your `$PATH` and available everywhere
 
-A lot of stuff. Seriously, a lot of stuff. Check them out in the file browser
-above and see what components may mesh up with you.
-[Fork it](https://github.com/holman/dotfiles/fork), remove what you don't
-use, and build on what you do use.
-
-## components
-
-There's a few special files in the hierarchy.
-
-- **bin/**: Anything in `bin/` will get added to your `$PATH` and be made
-  available everywhere.
-- **topic/\*.zsh**: Any files ending in `.zsh` get loaded into your
-  environment.
-- **topic/path.zsh**: Any file named `path.zsh` is loaded first and is
-  expected to setup `$PATH` or similar.
-- **topic/completion.zsh**: Any file named `completion.zsh` is loaded
-  last and is expected to setup autocomplete.
-- **topic/install.sh**: Any file named `install.sh` is executed when you run `script/install`. To avoid being loaded automatically, its extension is `.sh`, not `.zsh`.
-- **topic/\*.symlink**: Any file ending in `*.symlink` gets symlinked into
-  your `$HOME`. This is so you can keep all of those versioned in your dotfiles
-  but still keep those autoloaded files in your home directory. These get
-  symlinked in when you run `script/bootstrap`.
-
-## install
-
-Run this:
+## Installation
 
 ```sh
-git clone https://github.com/holman/dotfiles.git ~/.dotfiles
+git clone https://github.com/yourusername/dotfiles.git ~/.dotfiles
 cd ~/.dotfiles
 script/bootstrap
+brew bundle  # Installs dependencies via Homebrew
 ```
 
-This will symlink the appropriate files in `.dotfiles` to your home directory.
-Everything is configured and tweaked within `~/.dotfiles`.
+This will:
+1. Symlink all `*.symlink` files to your home directory
+2. Install Homebrew packages and applications
+3. Set up tool versions with mise
 
-The main file you'll want to change right off the bat is `zsh/zshrc.symlink`,
-which sets up a few paths that'll be different on your particular machine.
+## Key Tools
 
-`dot` is a simple script that installs some dependencies, sets sane macOS
-defaults, and so on. Tweak this script, and occasionally run `dot` from
-time to time to keep your environment fresh and up-to-date. You can find
-this script in `bin/`.
+### Mise
 
-## bugs
+Mise manages tool versions (formerly asdf). Configure global defaults in `~/.mise.toml` and project-specific versions in each project directory.
 
-I want this to work for everyone; that means when you clone it down it should
-work for you even though you may not have `rbenv` installed, for example. That
-said, I do use this as _my_ dotfiles, so there's a good chance I may break
-something if I forget to make a check for a dependency.
+```sh
+# List installed tools
+mise list
 
-If you're brand-new to the project and run into any blockers, please
-[open an issue](https://github.com/holman/dotfiles/issues) on this repository
-and I'd love to get it fixed for you!
+# Install a tool
+mise install ruby@latest
 
-## thanks
+# Use a specific version in a project
+mise use ruby@3.2.0
+```
 
-I forked [Ryan Bates](http://github.com/ryanb)' excellent
-[dotfiles](http://github.com/ryanb/dotfiles) for a couple years before the
-weight of my changes and tweaks inspired me to finally roll my own. But Ryan's
-dotfiles were an easy way to get into bash customization, and then to jump ship
-to zsh a bit later. A decent amount of the code in these dotfiles stem or are
-inspired from Ryan's original project.
+### Oh-My-Zsh with Spaceship
+
+The shell is preconfigured with useful plugins and a modern Spaceship prompt. Customize the prompt in `zsh/prompt_integrations.zsh`.
+
+### 1Password Integration
+
+Use the 1Password CLI for secrets management:
+
+```sh
+# Login to 1Password
+opl
+
+# Get a password
+opg item-name
+
+# Load environment variables from a 1Password item
+ope item-name
+```
+
+### MCP Server Management
+
+Manage Model Control Protocol servers for AI development:
+
+```sh
+# Start an MCP server with default model
+mcp-server start
+
+# List running servers
+mcp-server list
+
+# Stop a server
+mcp-server stop <pid>
+```
+
+### Ghostty Terminal
+
+Ghostty terminal is configured with:
+- JetBrains Mono Nerd Font
+- Nord color theme
+- Custom keybindings
+- Performance optimizations
+
+### Elixir Development
+
+Full Elixir environment with:
+- IEx configuration with custom helpers
+- Phoenix shortcuts
+- LiveBook integration
+- Mix aliases
+
+```sh
+# Start Phoenix server
+mps
+
+# Start LiveBook
+lbs
+```
+
+### Bun JavaScript Runtime
+
+Bun is configured as the primary JavaScript runtime:
+
+```sh
+# Run scripts
+br dev
+
+# Install packages
+bi
+
+# Switch to Node.js mode if needed
+nodemode
+```
+
+## Customization
+
+- **Local customizations**: Create a `~/.zshrc.local` file for machine-specific settings
+- **Git config**: Update `git/gitconfig.local.symlink` for your git credentials
+- **Tool versions**: Update `.mise.toml` for default tool versions
+
+## Maintenance
+
+Run `script/bootstrap` when you add new symlinks to update your environment.
+
+Run `brew bundle` periodically to ensure all packages are installed.
+
+## Directory Structure
+
+This dotfiles repository uses a topic-based organization:
+
+- `aws/`: AWS CLI configurations and helpers
+- `bin/`: Executable scripts
+- `bun/`: Bun JavaScript runtime configuration
+- `cursor/`: Cursor editor configuration
+- `docker/`: Docker aliases and helpers (includes modern `docker compose` command)
+- `elixir/`: Elixir and Phoenix development environment
+- `functions/`: Utility functions for shell
+- `ghostty/`: Ghostty terminal configuration
+- `git/`: Git configuration and aliases
+- `homebrew/`: Homebrew configuration with support for both Intel and Apple Silicon Macs
+- `macos/`: macOS specific settings
+- `mcp/`: Model Control Protocol server management
+- `mise/`: Configuration for mise version manager
+- `node/`: Node.js configuration (managed by mise)
+- `ruby/`: Ruby configuration (managed by mise)
+- `system/`: System-wide environment variables and aliases (uses Cursor as default editor)
+- `xcode/`: Xcode-related helpers with support for iOS, watchOS, and visionOS simulators
+- `yarn/`: Yarn package manager configuration (being replaced by Bun)
+- `zsh/`: ZSH shell configuration with oh-my-zsh
+
+## Recent Updates
+
+- Replaced multiple version managers with mise (Ruby, Node.js, etc.)
+- Added Bun as the primary JavaScript runtime
+- Updated Docker aliases to support modern `docker compose` command
+- Configured Homebrew paths to support both Intel and Apple Silicon Macs
+- Set Cursor as the default editor
+- Added support for visionOS simulator in Xcode aliases
+- Optimized paths for better compatibility and security
+- Added AWS, 1Password CLI, and Ghostty configurations
+- Removed deprecated tools and cleaned up unused configurations
+
+## Credits
+
+Based on Holman's dotfiles organization with significant modernization.

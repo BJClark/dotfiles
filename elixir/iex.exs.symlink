@@ -1,0 +1,90 @@
+# IEx configuration file
+# This file is symlinked to ~/.iex.exs
+
+# IEx configuration
+IEx.configure(
+  colors: [
+    eval_result: [:cyan, :bright],
+    eval_error: [:red, :bright],
+    eval_info: [:yellow, :bright],
+    syntax_colors: [
+      number: :magenta,
+      atom: :cyan,
+      string: :green,
+      boolean: :magenta,
+      nil: :red
+    ]
+  ],
+  default_prompt:
+    "#{IO.ANSI.green}%prefix#{IO.ANSI.reset}" <>
+    "#{IO.ANSI.cyan}%counter#{IO.ANSI.reset}" <>
+    "#{IO.ANSI.white}▶#{IO.ANSI.reset} ",
+  alive_prompt:
+    "#{IO.ANSI.green}%prefix#{IO.ANSI.reset}" <>
+    "#{IO.ANSI.yellow}%node#{IO.ANSI.reset}" <>
+    "#{IO.ANSI.cyan}%counter#{IO.ANSI.reset}" <>
+    "#{IO.ANSI.white}▶#{IO.ANSI.reset} ",
+  history_size: 100,
+  inspect: [
+    pretty: true,
+    limit: :infinity,
+    width: 80,
+    custom_options: [sort_maps: true]
+  ]
+)
+
+# Helper function to inspect with all structs expanded
+defmodule IExHelpers do
+  # Return the last value in IEx
+  def v, do: IEx.History.nth(-1)
+
+  # Clear the screen
+  def clear, do: IO.puts(IO.ANSI.clear())
+
+  # Print the current directory
+  def pwd, do: IO.puts(File.cwd!())
+
+  # Enhanced inspect
+  def i(term) do
+    IO.inspect(term, structs: false, limit: :infinity, width: 80)
+  end
+
+  # Print a tree representation of a nested map or struct
+  def tree(term, opts \\ []) do
+    term
+    |> inspect(Keyword.merge([pretty: true, width: 0], opts))
+    |> IO.puts()
+  end
+
+  # Reload modules in the current project
+  def reload! do
+    Mix.Task.reenable("compile.elixir")
+    Application.stop(Mix.Project.config()[:app])
+    Mix.Task.run("compile.elixir")
+    Application.start(Mix.Project.config()[:app])
+  end
+
+  # Get help for a module
+  def h(module) do
+    case Code.ensure_loaded(module) do
+      {:module, _} ->
+        IO.puts("#{inspect(module)} - #{module.module_info(:compile)[:source]}")
+        functions = module.__info__(:functions)
+        for {fun, arity} <- Enum.sort(functions) do
+          IO.puts("  #{fun}/#{arity}")
+        end
+      {:error, reason} ->
+        IO.puts("#{inspect(module)} - Error: #{reason}")
+    end
+  end
+end
+
+# Import helpers into IEx session
+import IExHelpers
+
+# Let user know custom IEx profile has loaded
+IO.puts("#{IO.ANSI.green}** IEx configuration loaded **#{IO.ANSI.reset}")
+
+# Import these modules/functions by default in IEx
+import_if_available(Ecto.Query, only: [from: 2])
+import_if_available(Ecto.Changeset) 

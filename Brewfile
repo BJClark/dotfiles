@@ -1,23 +1,58 @@
 cask_args appdir: '/Applications'
 
 tap 'homebrew/bundle'
-tap 'puma/puma'
+tap 'homebrew/cask-fonts'
 
+# Essential tools
+brew 'mise'
+brew 'wget'
+brew 'curl'
+brew 'jq'
+brew 'ripgrep'
 brew 'ack'
 brew 'openssl'
-brew 'node'
-brew 'readline'
-brew 'ruby-install'
-brew 'chruby'
-brew 'unrar'
-brew 'wget'
-brew 'yarn'
+brew 'ghostty'
+brew 'git'
+brew 'git-lfs'
 
+# Security
+brew 'gnupg'
+brew '1password-cli'
+
+# AWS tools
+brew 'awscli'
+brew 'aws-vault'
+
+# JavaScript/TypeScript
+brew 'bun'
+brew 'node' # Keep for compatibility
+
+# Databases
+brew 'postgresql@15'
+brew 'redis'
+brew 'sqlite'
+
+# Elixir support
+brew 'wxwidgets' # for LiveBook
+brew 'libxml2'
+brew 'libxslt'
+
+# Font for terminal
+cask 'font-jetbrains-mono-nerd-font'
+cask 'font-fira-code-nerd-font'
+
+# Apps
 cask '1password'
-cask 'atom'
+cask 'cursor'
 cask 'google-chrome'
 cask 'slack'
-cask 'steam'
-cask 'transmission'
-cask 'tunnelbear'
-cask 'vlc'
+cask 'discord'
+cask 'rectangle' # Window management
+cask 'docker'
+
+# Remove unused tools
+# brew 'ruby-install'
+# brew 'chruby'
+# brew 'yarn'
+# cask 'atom'
+# cask 'tunnelbear'

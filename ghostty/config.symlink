@@ -1,0 +1,67 @@
+# Ghostty Terminal Configuration
+
+# Font configuration
+font-family = "JetBrainsMono Nerd Font"
+font-size = 15
+font-feature = "liga" # Enable ligatures
+font-feature = "calt" # Contextual alternates
+font-feature = "ss01" # Stylistic set 1
+font-feature = "zero" # Slashed zero
+
+# Window settings
+window-height = 35
+window-width = 120
+window-padding-x = 10
+window-padding-y = 10
+macos-option-as-alt = true
+confirm-close = false
+adjust-cell-height = -2% # Tighter vertical spacing
+adjust-cell-width = 1% # Slightly wider cells
+
+# Cursor appearance
+cursor-style = beam
+cursor-thickness = 2
+unfocused-cursor-opacity = 0.2
+
+# Color scheme (Nord-inspired)
+background = #2E3440
+foreground = #D8DEE9
+cursor-color = #88C0D0
+selection-background = #4C566A
+selection-foreground = #ECEFF4
+
+# Nord color palette
+palette = 0=#3B4252
+palette = 1=#BF616A
+palette = 2=#A3BE8C
+palette = 3=#EBCB8B
+palette = 4=#81A1C1
+palette = 5=#B48EAD
+palette = 6=#88C0D0
+palette = 7=#E5E9F0
+palette = 8=#4C566A
+palette = 9=#BF616A
+palette = 10=#A3BE8C
+palette = 11=#EBCB8B
+palette = 12=#81A1C1
+palette = 13=#B48EAD
+palette = 14=#8FBCBB
+palette = 15=#ECEFF4
+
+# scrollback and performance
+scrollback = 10000
+shell-integration-features = "no-cursor"
+cursor-blink-mode = on
+
+# Keybindings
+keybind = ctrl+shift+n=new_window
+keybind = ctrl+shift+t=new_tab
+keybind = ctrl+shift+w=close_tab
+keybind = ctrl+tab=next_tab
+keybind = ctrl+shift+tab=previous_tab
+keybind = ctrl+shift+l=clear_screen
+keybind = ctrl+shift+c=copy
+keybind = ctrl+shift+v=paste
+keybind = cmd+equal=increase_font_size
+keybind = cmd+minus=decrease_font_size
+keybind = cmd+0=reset_font_size 

@@ -1,0 +1,22 @@
+[tools]
+# Ruby configuration
+ruby = "latest"
+
+# Node.js - keep minimal for compatibility
+nodejs = "lts"
+
+# Bun as primary JS runtime
+bun = "latest"
+
+# Erlang and Elixir
+erlang = "latest"
+elixir = "latest"
+
+[settings]
+# Keep .tool-versions files for backward compatibility
+legacy_version_file = true
+
+# Configure mise plugins
+verbose = false
+always_keep_download = false
+always_keep_install = false 

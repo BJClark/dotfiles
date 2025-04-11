@@ -1,1 +1,1 @@
-export EDITOR='nova --wait'
+export EDITOR='cursor --wait'
