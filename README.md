@@ -31,7 +31,7 @@ Everything's built around topic areas. Each topic has its own directory containi
 ## Installation
 
 ```sh
-git clone https://github.com/yourusername/dotfiles.git ~/.dotfiles
+git clone https://github.com/BJClark/dotfiles.git ~/.dotfiles
 cd ~/.dotfiles
 script/bootstrap
 brew bundle  # Installs dependencies via Homebrew
@@ -41,6 +41,13 @@ This will:
 1. Symlink all `*.symlink` files to your home directory
 2. Install Homebrew packages and applications
 3. Set up tool versions with mise
+4. Configure Ghostty terminal
+5. Set up Oh-My-Zsh plugins for Elixir
+6. Ensure proper directory structure for configs
+
+The install process runs these key scripts:
+- `script/bootstrap`: Sets up symlinks and runs the installation scripts (also makes install scripts executable)
+- `script/install`: Installs all dependencies
 
 ## Key Tools
 
@@ -143,6 +150,20 @@ nodemode
 Run `script/bootstrap` when you add new symlinks to update your environment.
 
 Run `brew bundle` periodically to ensure all packages are installed.
+
+## Troubleshooting
+
+### Common Issues
+
+- **Yarn configuration error**: If you see `Error: ENOTDIR: not a directory, open '/Users/username/.config/yarn'`, run:
+  ```sh
+  # Fix Yarn configuration directory
+  mv ~/.config ~/.config.bak && mkdir -p ~/.config/yarn
+  ```
+
+- **Missing Oh-My-Zsh plugins**: Custom plugins are in `~/.oh-my-zsh/custom/plugins/`. See the `zsh/oh-my-zsh.zsh` file for the list of enabled plugins.
+
+- **Reload configuration**: Use `reload!` to refresh your shell configuration after making changes.
 
 ## Directory Structure
 

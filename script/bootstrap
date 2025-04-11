@@ -9,6 +9,10 @@ set -e
 
 echo ''
 
+# Make all install scripts executable
+find "$DOTFILES_ROOT" -name "install.sh" -type f -exec chmod +x {} \;
+find "$DOTFILES_ROOT/script" -name "*.sh" -type f -exec chmod +x {} \;
+
 info () {
   printf "\r  [ \033[00;34m..\033[0m ] $1\n"
 }

@@ -27,4 +27,4 @@ alias awsstaging="aws-vault exec staging --"
 # Resource management shortcuts
 alias ec2ls="aws ec2 describe-instances --query 'Reservations[].Instances[].[InstanceId,State.Name,Tags[?Key==\`Name\`].Value[]|[0],InstanceType,PublicIpAddress,PrivateIpAddress]' --output table"
 alias s3ls="aws s3 ls"
-alias cfnls="aws cloudformation list-stacks --query 'StackSummaries[?StackStatus!=`DELETE_COMPLETE`].[StackName,StackStatus,CreationTime]' --output table" 
+alias cfnls="aws cloudformation list-stacks --query \"StackSummaries[?StackStatus!='DELETE_COMPLETE'].[StackName,StackStatus,CreationTime]\" --output table" 
