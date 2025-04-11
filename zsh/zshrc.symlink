@@ -3,8 +3,14 @@
 # Path configuration
 export PATH=$HOME/bin:/usr/local/bin:$PATH
 
-# Dotfiles directory shortcut
-export DOTS=$HOME/Developer/dotfiles
+# Dotfiles directory shortcut - try both possible locations
+if [ -d "$HOME/Developer/scidept/dotfiles" ]; then
+  export DOTS=$HOME/Developer/scidept/dotfiles
+elif [ -d "$HOME/Developer/dotfiles" ]; then
+  export DOTS=$HOME/Developer/dotfiles
+else
+  echo "Warning: Could not find dotfiles directory"
+fi
 
 # Projects directory
 export PROJECTS=$HOME/Developer
@@ -24,7 +30,7 @@ fi
 
 # Load all zsh files from the dotfiles
 typeset -U config_files
-config_files=($DOTS/**/*.zsh)
+config_files=($DOTS/zsh/*.zsh)
 
 # Load path files first
 for file in ${(M)config_files:#*/path.zsh}

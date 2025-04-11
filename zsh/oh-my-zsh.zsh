@@ -14,7 +14,6 @@ plugins=(
   macos
   docker
   docker-compose
-  mise
   rails
   ruby
   elixir
@@ -48,4 +47,8 @@ HIST_STAMPS="mm/dd/yyyy"
 source "$ZSH/oh-my-zsh.sh"
 
 # Load Spaceship prompt after Oh-My-Zsh
-source "/opt/homebrew/opt/spaceship/spaceship.zsh" 
+if [ -f "$HOME/.oh-my-zsh/custom/themes/spaceship-prompt/spaceship.zsh" ]; then
+  source "$HOME/.oh-my-zsh/custom/themes/spaceship-prompt/spaceship.zsh"
+elif [ -f "/opt/homebrew/opt/spaceship/spaceship.zsh" ]; then
+  source "/opt/homebrew/opt/spaceship/spaceship.zsh"
+fi
