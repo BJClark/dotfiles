@@ -14,6 +14,7 @@ brew 'openssl'
 brew 'ghostty'
 brew 'git'
 brew 'git-lfs'
+brew 'spaceship'
 
 # Security
 brew 'gnupg'

@@ -14,14 +14,12 @@ window-width = 120
 window-padding-x = 10
 window-padding-y = 10
 macos-option-as-alt = true
-confirm-close = false
-adjust-cell-height = -2% # Tighter vertical spacing
-adjust-cell-width = 1% # Slightly wider cells
+window-save-state = never
+adjust-cell-height = -2%
+adjust-cell-width = 1%
 
 # Cursor appearance
-cursor-style = beam
-cursor-thickness = 2
-unfocused-cursor-opacity = 0.2
+cursor-style = bar
 
 # Color scheme (Nord-inspired)
 background = #2E3440
@@ -49,19 +47,4 @@ palette = 14=#8FBCBB
 palette = 15=#ECEFF4
 
 # scrollback and performance
-scrollback = 10000
 shell-integration-features = "no-cursor"
-cursor-blink-mode = on
-
-# Keybindings
-keybind = ctrl+shift+n=new_window
-keybind = ctrl+shift+t=new_tab
-keybind = ctrl+shift+w=close_tab
-keybind = ctrl+tab=next_tab
-keybind = ctrl+shift+tab=previous_tab
-keybind = ctrl+shift+l=clear_screen
-keybind = ctrl+shift+c=copy
-keybind = ctrl+shift+v=paste
-keybind = cmd+equal=increase_font_size
-keybind = cmd+minus=decrease_font_size
-keybind = cmd+0=reset_font_size 

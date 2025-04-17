@@ -1,10 +1,13 @@
 # Oh My Zsh Configuration
 
 # Path to your oh-my-zsh installation
-export ZSH="$HOME/.oh-my-zsh"
+export ZSH="$DOTS/zsh/oh-my-zsh"
 
-# Set theme (using spaceship prompt)
-ZSH_THEME=""
+# Path to your custom directory
+export ZSH_CUSTOM="$DOTS/zsh/custom"
+
+# Set theme
+ZSH_THEME="spaceship"
 
 # Set plugins
 plugins=(
@@ -47,8 +50,46 @@ HIST_STAMPS="mm/dd/yyyy"
 source "$ZSH/oh-my-zsh.sh"
 
 # Load Spaceship prompt after Oh-My-Zsh
-if [ -f "$HOME/.oh-my-zsh/custom/themes/spaceship-prompt/spaceship.zsh" ]; then
-  source "$HOME/.oh-my-zsh/custom/themes/spaceship-prompt/spaceship.zsh"
-elif [ -f "/opt/homebrew/opt/spaceship/spaceship.zsh" ]; then
-  source "/opt/homebrew/opt/spaceship/spaceship.zsh"
+if [ -f "$ZSH_CUSTOM/themes/spaceship-prompt/spaceship.zsh" ]; then
+  # Set Spaceship as the prompt theme
+  SPACESHIP_PROMPT_ORDER=(
+    time          # Time stamps section
+    user          # Username section
+    dir           # Current directory section
+    host          # Hostname section
+    git           # Git section (git_branch + git_status)
+    package       # Package version
+    node          # Node.js section
+    ruby          # Ruby section
+    elixir        # Elixir section
+    xcode         # Xcode section
+    swift         # Swift section
+    golang        # Go section
+    php           # PHP section
+    rust          # Rust section
+    haskell       # Haskell Stack section
+    julia         # Julia section
+    docker        # Docker section
+    aws           # Amazon Web Services section
+    venv          # virtualenv section
+    conda         # conda virtualenv section
+    pyenv         # Pyenv section
+    dotnet        # .NET section
+    kubecontext   # Kubectl context section
+    terraform     # Terraform workspace section
+    exec_time     # Execution time
+    line_sep      # Line break
+    battery       # Battery level and status
+    vi_mode       # Vi-mode indicator
+    jobs          # Background jobs indicator
+    exit_code     # Exit code section
+    char          # Prompt character
+  )
+  SPACESHIP_PROMPT_ADD_NEWLINE=true
+  SPACESHIP_PROMPT_SEPARATE_LINE=true
+  SPACESHIP_PROMPT_FIRST_PREFIX_SHOW=true
+  SPACESHIP_PROMPT_PREFIXES_SHOW=true
+  SPACESHIP_PROMPT_SUFFIXES_SHOW=true
+  SPACESHIP_PROMPT_DEFAULT_PREFIX="via "
+  SPACESHIP_PROMPT_DEFAULT_SUFFIX=" "
 fi

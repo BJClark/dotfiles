@@ -156,5 +156,39 @@ then
   fi
 fi
 
+# Setup Oh My Zsh
+info 'Setting up Oh My Zsh'
+if [ ! -d "$DOTFILES_ROOT/zsh/oh-my-zsh" ]; then
+  # Temporarily unset ZSH variable for installation
+  OLD_ZSH=$ZSH
+  unset ZSH
+  # Initialize git submodules
+  git submodule update --init --recursive
+  # Restore ZSH variable
+  export ZSH=$OLD_ZSH
+  success 'Oh My Zsh submodule initialized'
+else
+  success 'Oh My Zsh already installed'
+fi
+
+# Setup Spaceship prompt
+info 'Setting up Spaceship prompt'
+if [ ! -d "$DOTFILES_ROOT/zsh/custom/themes/spaceship-prompt" ]; then
+  # Initialize git submodules
+  git submodule update --init --recursive
+  success 'Spaceship prompt submodule initialized'
+else
+  success 'Spaceship prompt already installed'
+fi
+
+# Symlink Spaceship theme
+info 'Setting up Spaceship theme'
+if [ -d "$DOTFILES_ROOT/zsh/custom/themes/spaceship-prompt" ]; then
+  ln -sf "$DOTFILES_ROOT/zsh/custom/themes/spaceship-prompt/spaceship.zsh" "$DOTFILES_ROOT/zsh/oh-my-zsh/themes/spaceship.zsh-theme"
+  success "Spaceship theme symlinked"
+else
+  fail "Spaceship prompt directory not found"
+fi
+
 echo ''
 echo '  All installed!'

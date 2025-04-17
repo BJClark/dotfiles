@@ -1,7 +1,17 @@
 # Main zshrc configuration file
 
 # Path configuration
-export PATH=$HOME/bin:/usr/local/bin:$PATH
+# Add Homebrew to PATH
+if [ -d "/opt/homebrew/bin" ]; then
+  # Apple Silicon
+  export PATH="/opt/homebrew/bin:/opt/homebrew/sbin:/opt/homebrew/opt/spaceship/bin:$PATH"
+elif [ -d "/usr/local/bin" ]; then
+  # Intel
+  export PATH="/usr/local/bin:/usr/local/sbin:$PATH"
+fi
+
+# Add user bin and other paths
+export PATH="$HOME/bin:$PATH"
 
 # Dotfiles directory shortcut - try both possible locations
 if [ -d "$HOME/Developer/scidept/dotfiles" ]; then
